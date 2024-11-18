@@ -1,0 +1,42 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "project": [
+      "./tsconfig.json"
+    ]
+  },
+  "plugins": ["@typescript-eslint", "react", "react-hooks", "node"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "prettier"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "settings": {
+    "node": {
+      "tryExtensions": [".js", ".json", ".ts", ".tsx"]
+    }
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "node/no-unsupported-features/es-syntax": [
+      "error",
+      {
+        "ignores": ["modules","dynamicImport"]
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "no-unused-vars": "off"
+  }
+}
