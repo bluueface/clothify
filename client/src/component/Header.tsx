@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { Box, TextField, InputAdornment } from "@mui/material";
+import { Box, TextField, InputAdornment, Chip } from "@mui/material";
 import {
   LocalMallOutlined,
   PersonOutlined,
   SearchOutlined,
 } from "@mui/icons-material";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { useNavigate } from "react-router-dom";
 
 declare type Filter =
   | "New in"
@@ -14,6 +17,9 @@ declare type Filter =
   | "Discounts";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+
   const [hoveredItem, setHoveredItem] = useState<Filter | null>(null);
 
   const navItems: Record<Filter, string[]> = {
@@ -54,7 +60,7 @@ const Header = () => {
     <Box className=" p-2 flex flex-col justify-between h-40 bg-black text-white shadow-lg">
       <Box className="p-4 flex flex-row justify-between">
         <Box className="p-2 font-bold h-fit">CLOTHIFY</Box>
-        <Box className="flex justify-between gap-4 w-1/2 h-fit">
+        <Box className="flex justify-between gap-3 w-1/2 h-fit">
           <TextField
             variant="filled"
             placeholder="What are you looking for?"
@@ -83,7 +89,23 @@ const Header = () => {
             }}
           />
           <PersonOutlined fontSize="large" />
-          <LocalMallOutlined fontSize="large" />
+          <Box>
+            <LocalMallOutlined
+              fontSize="large"
+              className="cursor-pointer"
+              onClick={() => navigate("/shopping-cart")}
+            />
+            {cartItems.length > 0 && (
+              <Chip
+                label={String(
+                  cartItems.reduce((sum, item) => sum + item.quantity, 0),
+                )}
+                color="error"
+                variant="filled"
+                size="small"
+              />
+            )}
+          </Box>
         </Box>
       </Box>
       <Box className="flex justify-center gap-10 bg-white relative">
@@ -98,43 +120,3 @@ const Header = () => {
 };
 
 export default Header;
-
-//const navigate = useNavigate();
-
-// const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-// const [items, setItems] = useState<ReactNode[]>([]);
-//
-// const onClose = () => {
-//   setDialogOpen(false);
-//   setItems([]);
-// };
-//
-// const renderListItem = (label: string) => {
-//   return (
-//     <ListItem key={label} disableGutters className="m-2 bg-red-600">
-//       <ListItemText primary={label} />
-//     </ListItem>
-//   );
-// };
-//
-// const handleNavItemClicked = (filter?: Filter) => {
-//   const newItems: ReactNode[] = [];
-//
-//   switch (filter) {
-//     case "Clothing":
-//       newItems.push(renderListItem("Denim"));
-//       newItems.push(renderListItem("Pants"));
-//       newItems.push(renderListItem("Cargo"));
-//       break;
-//     case "Shoes":
-//       newItems.push(renderListItem("Boots"));
-//       newItems.push(renderListItem("Sneakers"));
-//       break;
-//     default:
-//       break;
-//   }
-//
-//   setItems(newItems);
-//   setDialogOpen(true);
-// };
-//

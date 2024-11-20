@@ -9,7 +9,7 @@ const Main = () => {
       <Box className="sticky top-0 z-50">
         <Header />
       </Box>
-      <Box className="p-2 flex-grow bg-yellow-50">
+      <Box className="p-2 flex-grow">
         <Outlet />
       </Box>
       <Footer />

@@ -1,25 +1,30 @@
-export interface Product {
+export interface ProductInterface {
   id: number;
   title: string;
-  // price: number;
-  // description: string;
-  // category: string;
-  // image: string;
-  // rating: Rating;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+  rating: RatingInterface;
 }
 
-export interface Category {
+export interface CategoryInterface {
   id: number;
   name: string;
 }
 
-export interface SubCategory {
+export interface SubCategoryInterface {
   id: number;
   name: string;
-  category: Category;
+  category: CategoryInterface;
 }
 
-export interface Rating {
+export interface RatingInterface {
   rate: number;
   count: number;
+}
+
+export interface CartItemInterface {
+  product: ProductInterface | undefined;
+  quantity: number;
 }

@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -6,12 +7,17 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import { ProductInterface } from "../../util/types";
 
-const Product = () => {
+interface Props {
+  product: ProductInterface;
+}
+
+const Product: React.FunctionComponent<Props> = ({ product }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/details");
+    navigate(`/products/${product.id}`);
   };
 
   return (
@@ -31,12 +37,12 @@ const Product = () => {
           <Typography
             gutterBottom
             component="div"
-            sx={{ fontSize: "large", fontWeight: 600 }}
+            sx={{ fontSize: "medium", fontWeight: 400 }}
           >
-            Product Name
+            {product.title}
           </Typography>
           <Typography variant="body2" sx={{ color: "red", fontSize: "large" }}>
-            $120,99
+            {product.price}
           </Typography>
         </CardContent>
       </CardActionArea>

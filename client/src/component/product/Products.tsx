@@ -10,9 +10,14 @@ import {
   SelectChangeEvent,
   Typography,
 } from "@mui/material";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const Products = () => {
+  const products = useSelector((state: RootState) => state.products.products);
   const [sortedBy, setSortedBy] = useState<string>("");
+
+  console.log("inside products: ", products);
 
   const handleChange = (event: SelectChangeEvent) => {
     setSortedBy(event.target.value as string);
@@ -43,19 +48,10 @@ const Products = () => {
           </FormControl>
         </Box>
       </Box>
-      <Box className="col-span-4 row-start-2 row-end-9 grid place-items-center grid-cols-4 gap-4">
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
+      <Box className="col-span-4 row-start-2 row-end-9 grid place-items-center grid-cols-3 gap-4 md:grid-cols-4">
+        {products
+          ?.slice(0, 12)
+          ?.map((product) => <Product key={product.id} product={product} />)}
       </Box>
       <Box className="col-span-4 row-start-9 row-end-10 flex items-center justify-center">
         <Pagination count={10} size="large" className="p-3" />

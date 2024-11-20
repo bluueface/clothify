@@ -1,74 +1,123 @@
-import React from "react";
-import { Box, Typography, Button, Divider } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Typography, Button, Divider, Rating } from "@mui/material";
 import UpdateQuantity from "./UpdateQuantity";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { ProductService } from "../../service/productService";
+import { CartItemInterface, ProductInterface } from "../../util/types";
+import {
+  addItemToCart,
+  increaseItemQuantity,
+} from "../../redux/reducer/cartReducer";
 
 const ProductDetails = () => {
+  const { productId } = useParams();
+
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+
+  const [product, setProduct] = useState<ProductInterface>();
+  const [quantity, setQuantity] = useState<number>(1);
+
+  useEffect(() => {
+    if (productId) {
+      ProductService.getProductById(Number(productId))
+        .then((res) => {
+          setProduct(res);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [productId]);
+
+  const addToCart = () => {
+    let items: CartItemInterface[] = [];
+    items = items.concat(cartItems);
+    const itemToBeAdded = { product: product, quantity: quantity };
+
+    console.log("inside add to cart", quantity);
+
+    if (items.find((item) => item.product?.id === product?.id)) {
+      dispatch(increaseItemQuantity(itemToBeAdded));
+    } else {
+      items.push(itemToBeAdded);
+      dispatch(addItemToCart(items));
+    }
+  };
+
+  console.log("quantity", quantity);
+
   return (
-    <Box className="flex flex-row gap-8 justify-center py-4 h-fit">
-      {/* Image Wrapper */}
-      <Box className="w-2/6 flex justify-center">
-        <img
-          src={require("../../asset/1.jpg")}
-          alt="product-image"
-          className="object-cover h-fit"
-        />
-      </Box>
-
-      {/* Details Section */}
-      <Box className="w-3/6 bg-white p-6 flex flex-col gap-4">
-        {/* Product Card */}
-        <Box>
-          <Typography variant="h5" className="font-bold">
-            Product title
-          </Typography>
-          <Typography variant="subtitle1" className="text-gray-600">
-            $120.99
-          </Typography>
+    <>
+      {product && (
+        <Box className="flex flex-row gap-8 justify-center py-4 h-fit">
+          <Box className="w-2/6 flex justify-center">
+            <img
+              src={require("../../asset/1.jpg")}
+              alt="product-image"
+              className="object-cover h-fit"
+            />
+          </Box>
+          <Box className="w-3/6 bg-white p-6 flex flex-col gap-4">
+            <Box className="flex flex-col gap-2">
+              <Typography variant="h5" className="font-bold">
+                {product?.title}
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                sx={{ fontWeight: 700, color: "red" }}
+              >
+                {`$${product?.price}`}
+              </Typography>
+            </Box>
+            <Divider className="my-4" />
+            <Box className="flex flex-row items-center gap-2">
+              <Rating
+                name="half-rating-read"
+                defaultValue={product?.rating?.rate}
+                precision={0.5}
+                readOnly
+              />
+              <Typography>{product?.rating?.count}</Typography>
+            </Box>
+            <Divider className="my-4" />
+            <Box className="flex flex-row items-center gap-2">
+              <Typography variant="body1" sx={{ fontWeight: 700 }}>
+                Category:
+              </Typography>
+              <Typography variant="body2" className="font-bold">
+                Denim
+              </Typography>
+            </Box>
+            <Divider className="my-4" />
+            <Box className="flex flex-col gap-4">
+              <UpdateQuantity quantity={quantity} onChange={setQuantity}>
+                <Button
+                  variant="contained"
+                  sx={{ bgcolor: "black" }}
+                  onClick={() => {
+                    addToCart();
+                  }}
+                >
+                  Add to Cart
+                </Button>
+              </UpdateQuantity>
+            </Box>
+            <Divider className="my-4" />
+            <Box>
+              <Typography variant="body1" sx={{ fontWeight: 700 }}>
+                Description:
+              </Typography>
+              <Typography variant="body2" className="text-gray-700">
+                {product?.description}
+              </Typography>
+            </Box>
+          </Box>
         </Box>
-        <Divider className="my-4" />
-
-        {/* Category */}
-        <Box className="flex flex-col gap-2">
-          <Typography variant="body1" className="font-semibold">
-            Category:
-          </Typography>
-          <Typography variant="body2" className="font-bold">
-            Denim
-          </Typography>
-        </Box>
-
-        {/* Quantity & Add to Cart */}
-        <Box className="flex flex-col gap-4">
-          <UpdateQuantity />
-          <Button variant="contained" color="primary" className="w-full">
-            Add to Cart
-          </Button>
-        </Box>
-        <Divider className="my-4" />
-
-        {/* Description */}
-        <Box>
-          <Typography variant="body1" className="font-semibold">
-            Description:
-          </Typography>
-          <Typography variant="body2" className="text-gray-700">
-            Tall t-shirts for every style and occasion. A good t-shirt is the
-            ultimate wardrobe all-rounder, and we re here to tell you that tall
-            guys shouldn t have to miss out. We ve got a giant (pun intended)
-            collection of plain and printed tall t-shirts and vests for the more
-            statuesque among us, so you ll find one or two for every situation.
-            Choose a few bold prints you can pair with our tall jeans or
-            tracksuits for casual day wear, or match block colours with a
-            tailored blazer and tall dress pants if you re going for modern
-            professional. Customise your look with zips, pockets, hoodies and
-            collars and you re good to go, rocking your unique style. Style:
-            Printed T-Shirt Design: Printed Fabric: Cotton Length: Regular
-            Sleeve Length: Short Sleeve Details & Care 100% cotton. Model is 6 4
-            and wears a size L
-          </Typography>
-        </Box>
-      </Box>
-    </Box>
+      )}
+    </>
   );
 };
 

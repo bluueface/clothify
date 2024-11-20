@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Product } from "../../util/types";
+import { ProductInterface } from "../../util/types";
 
 export interface ProductsState {
-  products: Product[] | undefined;
+  products: ProductInterface[] | undefined;
   isLoading: boolean;
   isError: boolean;
   error: unknown;
@@ -21,7 +21,7 @@ export const productsSlice = createSlice({
   reducers: {
     loadProductsSuccess: (
       state,
-      action: PayloadAction<Product[] | undefined>,
+      action: PayloadAction<ProductInterface[] | undefined>,
     ) => {
       state.isLoading = false;
       state.products = action.payload;
