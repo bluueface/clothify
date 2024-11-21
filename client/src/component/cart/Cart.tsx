@@ -1,12 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, Divider, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import CartItem from "./CartItem";
+import { useNavigate } from "react-router-dom";
+import { setOrderToCreate } from "../../redux/reducer/orderReducer";
 
 const Cart: React.FunctionComponent = () => {
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const connectedUser = useSelector(
+    (state: RootState) => state.users.connectedUser,
+  );
   const cart = useSelector((state: RootState) => state.cart);
-  const { items } = cart;
+
+  useEffect(() => {
+    if (cart.items.length > 0) {
+      const newProducts: any[] = [];
+      cart.items.map((item) => newProducts.push(item.product));
+      dispatch(
+        setOrderToCreate({
+          buyer: connectedUser,
+          products: newProducts,
+        }),
+      );
+    } else {
+      dispatch(setOrderToCreate(undefined));
+    }
+  }, [cart, dispatch]);
 
   const renderValueLabel = (label: string, value: number, bold?: boolean) => (
     <Box className="flex justify-between my-2">
@@ -19,7 +41,7 @@ const Cart: React.FunctionComponent = () => {
     </Box>
   );
 
-  if (items.reduce((acc, item) => acc + item.quantity, 0) === 0) {
+  if (cart.items.reduce((acc, item) => acc + item.quantity, 0) === 0) {
     return (
       <Box className="flex justify-center items-center py-10">
         <Typography variant="h6" color="textSecondary">
@@ -32,7 +54,7 @@ const Cart: React.FunctionComponent = () => {
   return (
     <Box className="flex flex-col md:flex-row gap-8 p-6">
       <Box className="flex-1 flex flex-col gap-4">
-        {items.map((item) => (
+        {cart.items.map((item) => (
           <CartItem key={item?.product?.id} item={item} />
         ))}
       </Box>
@@ -44,10 +66,10 @@ const Cart: React.FunctionComponent = () => {
         <Button
           variant="contained"
           fullWidth
-          onClick={() => console.log("Proceed to checkout")}
+          onClick={() => navigate("/orders/shipping-address")}
           sx={{ bgcolor: "black" }}
         >
-          Validate
+          Checkout
         </Button>
       </Box>
     </Box>

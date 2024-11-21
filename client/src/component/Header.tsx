@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, TextField, InputAdornment, Chip } from "@mui/material";
+import { Box, Chip, InputAdornment, TextField } from "@mui/material";
 import {
   LocalMallOutlined,
   PersonOutlined,
@@ -8,47 +8,61 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
+import { CategoryInterface } from "../util/types";
 
-declare type Filter =
-  | "New in"
-  | "Clothing"
-  | "Shoes"
-  | "Accessories"
-  | "Discounts";
+interface Props {
+  setSelectedId?: (value?: number) => void;
+}
 
-const Header = () => {
+const Header: React.FunctionComponent<Props> = ({ setSelectedId }) => {
   const navigate = useNavigate();
+
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const categories = useSelector(
+    (state: RootState) => state.categories.categories,
+  );
 
-  const [hoveredItem, setHoveredItem] = useState<Filter | null>(null);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
-  const navItems: Record<Filter, string[]> = {
-    "New in": ["Trending", "Latest", "Collections"],
-    Clothing: ["Pants", "Denim", "Jacket"],
-    Shoes: ["Sneakers", "Boots", "Sandals"],
-    Accessories: ["Hats", "Bags", "Jewelry"],
-    Discounts: ["50% Off", "Clearance", "Special Offers"],
-  };
-
-  const renderNavItem = (label: Filter) => (
+  const renderClickableNavItem = (item: string) => (
     <Box
       className="py-4 uppercase font-black text-black cursor-pointer relative"
-      onMouseEnter={() => setHoveredItem(label)}
+      onClick={() => {
+        if (setSelectedId) {
+          setSelectedId(undefined);
+        }
+        navigate("/products");
+      }}
+    >
+      {item}
+    </Box>
+  );
+
+  const renderNavItem = (item: CategoryInterface) => (
+    <Box
+      key={item.id}
+      className="py-4 uppercase font-black text-black cursor-pointer relative"
+      onMouseEnter={() => setHoveredItem(item.name)}
       onMouseLeave={() => setHoveredItem(null)}
     >
-      {label}
-      {hoveredItem === label && (
+      {item.name}
+      {hoveredItem === item.name && (
         <Box
           className="absolute top-full left-0 bg-black text-white text-sm font-normal shadow-lg rounded  z-50"
           sx={{ minWidth: "200px" }}
         >
-          {navItems[label].map((item) => (
+          {item.subCategories.map((el) => (
             <Box
-              key={item}
+              key={el.id}
               className="p-2 normal-case cursor-pointer hover:underline"
-              onClick={() => console.log(`Clicked: ${item}`)}
+              onClick={() => {
+                if (setSelectedId) {
+                  setSelectedId(el.id);
+                }
+                navigate("/products");
+              }}
             >
-              {item}
+              {el.name}
             </Box>
           ))}
         </Box>
@@ -109,11 +123,9 @@ const Header = () => {
         </Box>
       </Box>
       <Box className="flex justify-center gap-10 bg-white relative">
-        {renderNavItem("New in")}
-        {renderNavItem("Clothing")}
-        {renderNavItem("Shoes")}
-        {renderNavItem("Accessories")}
-        {renderNavItem("Discounts")}
+        {renderClickableNavItem("New in")}
+        {categories?.map((category) => renderNavItem(category))}
+        {renderClickableNavItem("Discounts")}
       </Box>
     </Box>
   );

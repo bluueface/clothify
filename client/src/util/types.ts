@@ -3,14 +3,16 @@ export interface ProductInterface {
   title: string;
   price: number;
   description: string;
-  category: string;
+  subCategory: SubCategoryInterface;
   image: string;
-  rating: RatingInterface;
+  ratingCount?: number;
+  ratingRate?: number;
 }
 
 export interface CategoryInterface {
   id: number;
   name: string;
+  subCategories: SubCategoryInterface[];
 }
 
 export interface SubCategoryInterface {
@@ -27,4 +29,33 @@ export interface RatingInterface {
 export interface CartItemInterface {
   product: ProductInterface | undefined;
   quantity: number;
+}
+
+export interface OrderInterface {
+  id?: number;
+  date?: Date;
+  products?: ProductInterface[];
+  buyer?: UserInterface;
+  address?: Address;
+  orderState?: string;
+}
+
+export interface UserInterface {
+  id?: number;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+  address?: Address;
+  orders?: OrderInterface[];
+  userType?: string;
+}
+
+export interface Address {
+  name?: string;
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
 }

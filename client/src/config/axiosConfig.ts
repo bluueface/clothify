@@ -1,8 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 const config: AxiosRequestConfig = {
-  //baseURL: "http://localhost:8080/api",
-  baseURL: "https://fakestoreapi.com",
+  baseURL: "http://localhost:8080/api",
   //timeout: 10000,
   headers: {
     "Content-Type": "application/json",

@@ -2,9 +2,15 @@ import axiosInstance from "../config/axiosConfig";
 import { ProductInterface } from "../util/types";
 
 export class ProductService {
-  static getAllProducts = async (): Promise<ProductInterface[]> => {
+  static getAllProducts = async (
+    page: number,
+    subCategoryId?: number,
+    size = 5,
+  ) => {
     try {
-      const response = await axiosInstance.get<ProductInterface[]>("/products");
+      const response = await axiosInstance.get("/products", {
+        params: { subCategoryId, page, size },
+      });
       return response.data;
     } catch (error) {
       console.error("Get all products error", error);

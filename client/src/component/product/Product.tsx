@@ -25,7 +25,7 @@ const Product: React.FunctionComponent<Props> = ({ product }) => {
       <CardActionArea>
         <CardMedia
           component="img"
-          image={require("../../asset/1.jpg")}
+          image={product.image}
           alt="product image"
           sx={{
             width: "240px",

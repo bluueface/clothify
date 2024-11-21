@@ -48,6 +48,10 @@ export const cartSlice = createSlice({
       const index = state.items.indexOf(action.payload);
       state.items.splice(index, 1);
     },
+    resetCart: (state) => {
+      state.items = initialCartState.items;
+      state.total = initialCartState.total;
+    },
   },
 });
 
@@ -56,6 +60,7 @@ export const {
   increaseItemQuantity,
   updateItemQuantity,
   removeItemFromCart,
+  resetCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

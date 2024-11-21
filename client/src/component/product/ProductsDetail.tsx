@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Button, Divider, Rating } from "@mui/material";
+import { Box, Button, Divider, Rating, Typography } from "@mui/material";
 import UpdateQuantity from "./UpdateQuantity";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,8 +37,6 @@ const ProductDetails = () => {
     items = items.concat(cartItems);
     const itemToBeAdded = { product: product, quantity: quantity };
 
-    console.log("inside add to cart", quantity);
-
     if (items.find((item) => item.product?.id === product?.id)) {
       dispatch(increaseItemQuantity(itemToBeAdded));
     } else {
@@ -47,15 +45,13 @@ const ProductDetails = () => {
     }
   };
 
-  console.log("quantity", quantity);
-
   return (
     <>
       {product && (
         <Box className="flex flex-row gap-8 justify-center py-4 h-fit">
           <Box className="w-2/6 flex justify-center">
             <img
-              src={require("../../asset/1.jpg")}
+              src={product?.image}
               alt="product-image"
               className="object-cover h-fit"
             />
@@ -76,11 +72,11 @@ const ProductDetails = () => {
             <Box className="flex flex-row items-center gap-2">
               <Rating
                 name="half-rating-read"
-                defaultValue={product?.rating?.rate}
+                defaultValue={product?.ratingRate}
                 precision={0.5}
                 readOnly
               />
-              <Typography>{product?.rating?.count}</Typography>
+              <Typography>{product?.ratingCount}</Typography>
             </Box>
             <Divider className="my-4" />
             <Box className="flex flex-row items-center gap-2">
@@ -88,7 +84,7 @@ const ProductDetails = () => {
                 Category:
               </Typography>
               <Typography variant="body2" className="font-bold">
-                Denim
+                {product?.subCategory?.name}
               </Typography>
             </Box>
             <Divider className="my-4" />
