@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -56,5 +58,19 @@ public class ProductController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/rate")
+    public ResponseEntity<String> updateProductRatings(@RequestBody List<Product> products) {
+        if (products == null || products.isEmpty()) {
+            return ResponseEntity.badRequest().body("No products provided to update ratings.");
+        }
+
+        try {
+            productService.rateProduct(products);
+            return ResponseEntity.ok("Products updated with ratings successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An error occurred while updating product ratings.");
+        }
     }
 }

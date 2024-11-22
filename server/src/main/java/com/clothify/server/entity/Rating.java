@@ -28,4 +28,10 @@ public class Rating {
         this.rate = rate;
         this.comment = comment;
     }
+
+    public Rating(float rate, String comment, Product product) {
+        this.rate = rate;
+        this.comment = comment;
+        this.product = product;
+    }
 }

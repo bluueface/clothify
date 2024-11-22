@@ -62,4 +62,16 @@ public class OrderController {
         orderService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PutMapping("/{id}/cancel")
+    public ResponseEntity<OrderEntity> cancelOrder(@PathVariable long id) {
+        try {
+            OrderEntity cancelledOrder = orderService.cancelOrder(id);
+            return ResponseEntity.ok(cancelledOrder);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
 }

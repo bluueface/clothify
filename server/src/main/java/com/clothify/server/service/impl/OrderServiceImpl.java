@@ -1,6 +1,7 @@
 package com.clothify.server.service.impl;
 
 import com.clothify.server.entity.OrderEntity;
+import com.clothify.server.entity.OrderState;
 import com.clothify.server.repository.OrderRepository;
 import com.clothify.server.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void delete(long id) {
         orderRepository.deleteById(id);
+    }
+
+    @Override
+    public OrderEntity cancelOrder(long id) {
+        return getById(id)
+                .map(order -> {
+                    order.setOrderState(OrderState.CANCELLED);
+                    return orderRepository.save(order);
+                })
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with ID: " + id));
     }
 }

@@ -13,4 +13,6 @@ public interface OrderService {
     OrderEntity save(OrderEntity order);
 
     void delete(long id);
+
+    OrderEntity cancelOrder(long id);
 }

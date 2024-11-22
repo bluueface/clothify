@@ -150,7 +150,7 @@ const Header: React.FunctionComponent<Props> = ({ setSelectedId }) => {
                     </Box>
                     <Box
                       className="pb-5 cursor-pointer font-medium hover:underline"
-                      onClick={() => navigate("/register")}
+                      onClick={() => navigate("/orders/history")}
                     >
                       Order History
                     </Box>

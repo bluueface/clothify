@@ -22,6 +22,7 @@ import Payment from "./component/order/Payment";
 import Login from "./component/user/Login";
 import Register from "./component/user/Register";
 import PrivateRoute from "./component/PrivateRoute";
+import OrderHistory from "./component/order/OrderHistory";
 
 function App() {
   const dispatch = useDispatch();
@@ -53,6 +54,14 @@ function App() {
           element={
             <PrivateRoute>
               <Cart />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/orders/history"
+          element={
+            <PrivateRoute>
+              <OrderHistory />
             </PrivateRoute>
           }
         />

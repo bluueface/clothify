@@ -5,6 +5,7 @@ export interface ProductInterface {
   description: string;
   subCategory: SubCategoryInterface;
   image: string;
+  ratings: RatingInterface[];
   ratingCount?: number;
   ratingRate?: number;
 }
@@ -23,7 +24,8 @@ export interface SubCategoryInterface {
 
 export interface RatingInterface {
   rate: number;
-  count: number;
+  comment: string;
+  product: ProductInterface;
 }
 
 export interface CartItemInterface {

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,5 +43,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void delete(long id) {
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public void rateProduct(List<Product> products) {
+        productRepository.saveAll(products);
     }
 }

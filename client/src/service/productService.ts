@@ -29,4 +29,14 @@ export class ProductService {
       throw error;
     }
   };
+
+  static rateProduct = async (products: ProductInterface[]) => {
+    try {
+      const response = await axiosInstance.put("/products/rate", products);
+      return response.data;
+    } catch (error) {
+      console.error("Rate products error", error);
+      throw error;
+    }
+  };
 }

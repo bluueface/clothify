@@ -27,4 +27,16 @@ export class OrderService {
       throw error;
     }
   };
+
+  static cancelOrder = async (orderId: number): Promise<OrderInterface> => {
+    try {
+      const response = await axiosInstance.put<OrderInterface>(
+        `/orders/${orderId}/cancel`,
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Cancel order error", error);
+      throw error;
+    }
+  };
 }
