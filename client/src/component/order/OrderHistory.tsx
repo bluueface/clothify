@@ -63,7 +63,11 @@ const OrderHistory = () => {
               variant="outlined"
               color="error"
               onClick={() => handleCancelOrder(order?.id)}
-              disabled={order.orderState === "CANCELLED"}
+              disabled={
+                order.orderState === "CANCELLED" ||
+                order.orderState === "SHIPPED" ||
+                order.orderState === "DELIVERED"
+              }
             >
               Cancel
             </Button>
