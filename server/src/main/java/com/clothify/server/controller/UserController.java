@@ -2,7 +2,11 @@ package com.clothify.server.controller;
 
 import com.clothify.server.entity.UserEntity;
 import com.clothify.server.service.UserService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +23,17 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserEntity> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            UserEntity user = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
+            return ResponseEntity.ok(user);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
+
 
     @GetMapping
     public ResponseEntity<List<UserEntity>> getAllUsers() {
@@ -47,5 +62,13 @@ public class UserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    static class LoginRequest {
+        private String email;
+        private String password;
     }
 }

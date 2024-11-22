@@ -1,4 +1,5 @@
 import axiosInstance from "../config/axiosConfig";
+import { LoginRequest } from "../util/types";
 
 export class UserService {
   static getAllUsers = async () => {
@@ -19,6 +20,17 @@ export class UserService {
       return response.data;
     } catch (error) {
       console.error("Get all users error", error);
+      throw error;
+    }
+  };
+
+  static login = async (loginRequest: LoginRequest) => {
+    try {
+      const response = await axiosInstance.post("/users/login", loginRequest);
+      console.log("login success: ", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Login error", error);
       throw error;
     }
   };

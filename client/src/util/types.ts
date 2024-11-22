@@ -59,3 +59,8 @@ export interface Address {
   postalCode: string;
   country: string;
 }
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}

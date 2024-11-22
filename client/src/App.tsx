@@ -19,19 +19,13 @@ import {
 } from "./redux/reducer/categoryReducer";
 import ShippingAddress from "./component/order/ShippingAddress";
 import Payment from "./component/order/Payment";
-import { UserService } from "./service/userService";
-import { setConnectedUser } from "./redux/reducer/userReducer";
+import Login from "./component/user/Login";
+import Register from "./component/user/Register";
+import PrivateRoute from "./component/PrivateRoute";
 
 function App() {
   const dispatch = useDispatch();
   const [selectedId, setSelectedId] = useState<number>();
-
-  // FIXME
-  useEffect(() => {
-    UserService.getConnectedUser(1).then((res) => {
-      dispatch(setConnectedUser(res));
-    });
-  }, []);
 
   useEffect(() => {
     CategoryService.getAllCategories()
@@ -47,12 +41,21 @@ function App() {
     createRoutesFromElements(
       <Route element={<Main setSelectedId={setSelectedId} />}>
         <Route index element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/sign-up" element={<Register />} />
         <Route
           path="/products"
           element={<Products selectedId={selectedId} />}
         />
         <Route path="/products/:productId" element={<ProductsDetail />} />
-        <Route path="/shopping-cart" element={<Cart />} />
+        <Route
+          path="/shopping-cart"
+          element={
+            <PrivateRoute>
+              <Cart />
+            </PrivateRoute>
+          }
+        />
         <Route path="/orders/shipping-address" element={<ShippingAddress />} />
         <Route path="/orders/payment" element={<Payment />} />
       </Route>,

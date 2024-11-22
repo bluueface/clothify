@@ -20,6 +20,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity login(String email, String password) {
+        return userRepository.findByEmail(email)
+                .filter(user -> user.getPassword().equals(password))
+                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
+    }
+
+    @Override
     public List<UserEntity> getAll() {
         return userRepository.findAll();
     }

@@ -13,4 +13,6 @@ public interface UserService {
     UserEntity save(UserEntity product);
 
     void delete(long id);
+
+    UserEntity login(String email, String password);
 }

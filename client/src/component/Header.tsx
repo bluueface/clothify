@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { Box, Chip, InputAdornment, TextField } from "@mui/material";
+import { Box, Button, Chip, InputAdornment, TextField } from "@mui/material";
 import {
   LocalMallOutlined,
   PersonOutlined,
   SearchOutlined,
 } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
 import { CategoryInterface } from "../util/types";
+import { setConnectedUser } from "../redux/reducer/userReducer";
 
 interface Props {
   setSelectedId?: (value?: number) => void;
@@ -17,12 +18,23 @@ interface Props {
 const Header: React.FunctionComponent<Props> = ({ setSelectedId }) => {
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+  const connectedUser = useSelector(
+    (state: RootState) => state.users.connectedUser,
+  );
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const categories = useSelector(
     (state: RootState) => state.categories.categories,
   );
 
+  const [popover, setPopover] = useState<boolean>(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+
+  const logOut = () => {
+    dispatch(setConnectedUser(undefined));
+    setPopover(false);
+    navigate("/");
+  };
 
   const renderClickableNavItem = (item: string) => (
     <Box
@@ -41,7 +53,7 @@ const Header: React.FunctionComponent<Props> = ({ setSelectedId }) => {
   const renderNavItem = (item: CategoryInterface) => (
     <Box
       key={item.id}
-      className="py-4 uppercase font-black text-black cursor-pointer relative"
+      className="py-4 uppercase font-black text-black relative"
       onMouseEnter={() => setHoveredItem(item.name)}
       onMouseLeave={() => setHoveredItem(null)}
     >
@@ -102,7 +114,60 @@ const Header: React.FunctionComponent<Props> = ({ setSelectedId }) => {
               },
             }}
           />
-          <PersonOutlined fontSize="large" />
+          <Box
+            onMouseEnter={() => setPopover(true)}
+            onMouseLeave={() => setPopover(false)}
+          >
+            <PersonOutlined fontSize="large" />
+            {popover && (
+              <Box
+                className="absolute font-black text-black right-6 text-sm bg-white shadow-lg border-[1px] border-black rounded z-50"
+                sx={{ minWidth: "150px" }}
+              >
+                {!connectedUser && (
+                  <>
+                    <Box
+                      className="p-2 normal-case cursor-pointer hover:underline"
+                      onClick={() => navigate("/login")}
+                    >
+                      Login
+                    </Box>
+                    <Box
+                      className="p-2 normal-case cursor-pointer hover:underline"
+                      onClick={() => navigate("/sign-up")}
+                    >
+                      Register
+                    </Box>
+                  </>
+                )}
+                {connectedUser && (
+                  <Box className="p-2">
+                    <Box className="py-2 normal-case">
+                      {`Hi,${connectedUser.firstName}`}
+                    </Box>
+                    <Box className="pt-3 pb-1 cursor-pointer font-medium hover:underline">
+                      My Account
+                    </Box>
+                    <Box
+                      className="pb-5 cursor-pointer font-medium hover:underline"
+                      onClick={() => navigate("/sign-up")}
+                    >
+                      Order History
+                    </Box>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      size="small"
+                      sx={{ backgroundColor: "black" }}
+                      onClick={logOut}
+                    >
+                      Log out
+                    </Button>
+                  </Box>
+                )}
+              </Box>
+            )}
+          </Box>
           <Box>
             <LocalMallOutlined
               fontSize="large"
