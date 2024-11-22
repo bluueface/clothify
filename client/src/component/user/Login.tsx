@@ -68,7 +68,7 @@ const Login = () => {
         <Button
           variant="text"
           color="primary"
-          onClick={() => navigate("/sign-up")}
+          onClick={() => navigate("/register")}
         >
           Sign Up
         </Button>

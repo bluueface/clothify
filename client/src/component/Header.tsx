@@ -134,7 +134,7 @@ const Header: React.FunctionComponent<Props> = ({ setSelectedId }) => {
                     </Box>
                     <Box
                       className="p-2 normal-case cursor-pointer hover:underline"
-                      onClick={() => navigate("/sign-up")}
+                      onClick={() => navigate("/register")}
                     >
                       Register
                     </Box>
@@ -150,7 +150,7 @@ const Header: React.FunctionComponent<Props> = ({ setSelectedId }) => {
                     </Box>
                     <Box
                       className="pb-5 cursor-pointer font-medium hover:underline"
-                      onClick={() => navigate("/sign-up")}
+                      onClick={() => navigate("/register")}
                     >
                       Order History
                     </Box>

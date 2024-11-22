@@ -9,27 +9,38 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { UserService } from "../../service/userService";
+import { useDispatch } from "react-redux";
+import { setConnectedUser } from "../../redux/reducer/userReducer";
 
 const Register = () => {
-  const [userType, setUserType] = useState<"buyer" | "seller">("buyer");
+  const dispatch = useDispatch();
+
+  const [userType, setUserType] = useState<"BUYER" | "SELLER">("BUYER");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
-    address: "",
     businessName: "",
   });
 
   const handleInputChange = (field: string, value: string) => {
-    // eslint-disable-next-line node/no-unsupported-features/es-syntax
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({
+      // eslint-disable-next-line node/no-unsupported-features/es-syntax
+      ...prev,
+      [field]: value,
+    }));
   };
 
   const handleSubmit = () => {
-    // eslint-disable-next-line node/no-unsupported-features/es-syntax
-    console.log("Form Data:", { ...formData, userType });
-    // Add your signup logic here
+    UserService.register({
+      // eslint-disable-next-line node/no-unsupported-features/es-syntax
+      ...formData,
+      userType: userType,
+    }).then((res) => {
+      dispatch(setConnectedUser(res));
+    });
   };
 
   return (
@@ -43,19 +54,19 @@ const Register = () => {
       }}
     >
       <Typography variant="h5" className="font-bold" textAlign="center">
-        Register
+        Register Form
       </Typography>
       <FormControl>
         <RadioGroup
           value={userType}
-          onChange={(e) => setUserType(e.target.value as "buyer" | "seller")}
+          onChange={(e) => setUserType(e.target.value as "BUYER" | "SELLER")}
           row
         >
-          <FormControlLabel value="buyer" control={<Radio />} label="Buyer" />
-          <FormControlLabel value="seller" control={<Radio />} label="Seller" />
+          <FormControlLabel value="BUYER" control={<Radio />} label="Buyer" />
+          <FormControlLabel value="SELLER" control={<Radio />} label="Seller" />
         </RadioGroup>
       </FormControl>
-      {userType === "seller" && (
+      {userType === "SELLER" && (
         <TextField
           label="Business Name"
           variant="outlined"
@@ -105,7 +116,7 @@ const Register = () => {
         onClick={handleSubmit}
         sx={{ backgroundColor: "black" }}
       >
-        Sign Up
+        Register
       </Button>
     </Box>
   );

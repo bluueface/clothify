@@ -42,7 +42,7 @@ function App() {
       <Route element={<Main setSelectedId={setSelectedId} />}>
         <Route index element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/sign-up" element={<Register />} />
+        <Route path="/register" element={<Register />} />
         <Route
           path="/products"
           element={<Products selectedId={selectedId} />}

@@ -1,5 +1,7 @@
 package com.clothify.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,6 +14,15 @@ import lombok.ToString;
 @ToString(exclude = "password")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "userType"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Buyer.class, name = "BUYER"),
+        @JsonSubTypes.Type(value = Seller.class, name = "SELLER")
+})
 public abstract class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
