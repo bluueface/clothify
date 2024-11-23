@@ -4,6 +4,7 @@ import cartReducer from "./reducer/cartReducer";
 import categoryReducer from "./reducer/categoryReducer";
 import orderReducer from "./reducer/orderReducer";
 import userReducer from "./reducer/userReducer";
+import ratingReducer from "./reducer/ratingReducer";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     cart: cartReducer,
     orders: orderReducer,
     users: userReducer,
+    ratings: ratingReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -23,6 +23,8 @@ import Login from "./component/user/Login";
 import Register from "./component/user/Register";
 import PrivateRoute from "./component/PrivateRoute";
 import OrderHistory from "./component/order/OrderHistory";
+import Administration from "./component/user/Administration";
+import Selling from "./component/user/Selling";
 
 function App() {
   const dispatch = useDispatch();
@@ -67,6 +69,8 @@ function App() {
         />
         <Route path="/orders/shipping-address" element={<ShippingAddress />} />
         <Route path="/orders/payment" element={<Payment />} />
+        <Route path="/administration" element={<Administration />} />
+        <Route path="/selling" element={<Selling />} />
       </Route>,
     ),
   );

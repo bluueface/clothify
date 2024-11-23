@@ -33,4 +33,9 @@ public class Buyer extends UserEntity {
     public String getUserType() {
         return "BUYER";
     }
+
+    @Override
+    public boolean isActive() {
+        return true;
+    }
 }

@@ -39,13 +39,18 @@ public abstract class UserEntity {
     @Embedded
     private Address address;
 
+    private boolean active;
+
     @Transient
     private String userType;
 
     public UserEntity() {
         this.userType = getUserType();
+        this.active = isActive();
     }
 
     public abstract String getUserType();
+
+    public abstract boolean isActive();
 
 }

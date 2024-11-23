@@ -64,6 +64,24 @@ public class UserController {
         }
     }
 
+    @PutMapping("/{id}/status")
+    public ResponseEntity<?> setUserActiveStatus(
+            @PathVariable("id") long id,
+            @RequestParam("status") boolean status) {
+
+        try {
+            UserEntity updatedUser = userService.setUserActiveStatus(id, status);
+            if (updatedUser != null) {
+                return ResponseEntity.ok(updatedUser);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
+        }
+    }
+
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor

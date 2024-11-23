@@ -12,4 +12,9 @@ public class SupAdmin extends UserEntity {
     public String getUserType() {
         return "ADMIN";
     }
+
+    @Override
+    public boolean isActive() {
+        return true;
+    }
 }

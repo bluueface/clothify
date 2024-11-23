@@ -3,6 +3,7 @@ package com.clothify.server.service.impl;
 import com.clothify.server.entity.UserEntity;
 import com.clothify.server.repository.UserRepository;
 import com.clothify.server.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,18 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email)
                 .filter(user -> user.getPassword().equals(password))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
+    }
+
+    @Override
+    public UserEntity setUserActiveStatus(long id, boolean status) {
+        Optional<UserEntity> userOptional = getById(id);
+
+        if (userOptional.isPresent()) {
+            UserEntity user = userOptional.get();
+            user.setActive(status);
+            return userRepository.save(user);
+        }
+        throw new EntityNotFoundException("User with ID " + id + " not found");
     }
 
     @Override

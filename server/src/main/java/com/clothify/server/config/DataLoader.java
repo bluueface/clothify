@@ -19,6 +19,7 @@ public class DataLoader {
             CategoryRepository categoryRepository,
             ProductRepository productRepository, UserRepository userRepository) {
         return args -> {
+
             // Subcategories data
             SubCategory subCategory1 = new SubCategory("Coats & Jackets");
             SubCategory subCategory2 = new SubCategory("Hoodies & Sweatshirts");
@@ -78,6 +79,22 @@ public class DataLoader {
             order1.setDate(LocalDateTime.now());
             order1.setAddress(address);
             order1.addProduct(product1);
+            // Admin data
+
+            SupAdmin supAdmin = new SupAdmin();
+            supAdmin.setFirstName("Admin");
+            supAdmin.setLastName("Admin");
+            supAdmin.setEmail("admin@gmail.com");
+            supAdmin.setPassword("123");
+            supAdmin.setAddress(address);
+
+            Seller seller = new Seller();
+            seller.setFirstName("Seller");
+            seller.setLastName("Seller");
+            seller.setEmail("seller@gmail.com");
+            seller.setPassword("123");
+            seller.setAddress(address);
+
 
             Buyer buyer1 = new Buyer();
             buyer1.setFirstName("Aziz");
@@ -86,7 +103,7 @@ public class DataLoader {
             buyer1.setPassword("123");
             buyer1.setAddress(address);
             buyer1.addOrder(order1);
-            userRepository.save(buyer1);
+            userRepository.saveAll(List.of(supAdmin, seller, buyer1));
 
 
         };

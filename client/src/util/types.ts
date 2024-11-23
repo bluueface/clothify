@@ -23,6 +23,7 @@ export interface SubCategoryInterface {
 }
 
 export interface RatingInterface {
+  id?: number;
   rate: number;
   comment: string;
   product: ProductInterface;
@@ -51,6 +52,7 @@ export interface UserInterface {
   address?: Address;
   orders?: OrderInterface[];
   userType?: string;
+  active?: boolean;
 }
 
 export interface Address {

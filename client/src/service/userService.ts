@@ -42,4 +42,19 @@ export class UserService {
       throw error;
     }
   };
+
+  static setUserActiveStatus = async (status: boolean, id: number) => {
+    try {
+      const response = await axiosInstance.put(`/users/${id}/status`, null, {
+        params: {
+          status,
+        },
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to update active status for user ID ${id}:`, error);
+      throw error;
+    }
+  };
 }

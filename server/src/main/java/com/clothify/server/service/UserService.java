@@ -15,4 +15,6 @@ public interface UserService {
     void delete(long id);
 
     UserEntity login(String email, String password);
+
+    UserEntity setUserActiveStatus(long id, boolean status);
 }

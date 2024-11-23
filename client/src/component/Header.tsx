@@ -143,17 +143,41 @@ const Header: React.FunctionComponent<Props> = ({ setSelectedId }) => {
                 {connectedUser && (
                   <Box className="p-2">
                     <Box className="py-2 normal-case">
-                      {`Hi,${connectedUser.firstName}`}
+                      {`Hi, ${connectedUser.firstName}`}
                     </Box>
-                    <Box className="pt-3 pb-1 cursor-pointer font-medium hover:underline">
-                      My Account
-                    </Box>
-                    <Box
-                      className="pb-5 cursor-pointer font-medium hover:underline"
-                      onClick={() => navigate("/orders/history")}
-                    >
-                      Order History
-                    </Box>
+                    {connectedUser.userType === "BUYER" && (
+                      <>
+                        <Box className="pt-3 pb-1 cursor-pointer font-medium hover:underline">
+                          My Account
+                        </Box>
+                        <Box
+                          className="pb-5 cursor-pointer font-medium hover:underline"
+                          onClick={() => navigate("/orders/history")}
+                        >
+                          Order History
+                        </Box>
+                      </>
+                    )}
+                    {connectedUser.userType === "SELLER" && (
+                      <>
+                        <Box
+                          className="pb-5 pt-3 cursor-pointer font-medium hover:underline"
+                          onClick={() => navigate("/selling")}
+                        >
+                          Selling
+                        </Box>
+                      </>
+                    )}
+                    {connectedUser.userType === "ADMIN" && (
+                      <>
+                        <Box
+                          className="pb-5 pt-3 cursor-pointer font-medium hover:underline"
+                          onClick={() => navigate("/administration")}
+                        >
+                          Administration
+                        </Box>
+                      </>
+                    )}
                     <Button
                       variant="contained"
                       fullWidth
