@@ -67,10 +67,39 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/orders/shipping-address" element={<ShippingAddress />} />
-        <Route path="/orders/payment" element={<Payment />} />
-        <Route path="/administration" element={<Administration />} />
-        <Route path="/selling" element={<Selling />} />
+
+        <Route
+          path="/orders/shipping-address"
+          element={
+            <PrivateRoute>
+              <ShippingAddress />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/orders/payment"
+          element={
+            <PrivateRoute>
+              <Payment />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/administration"
+          element={
+            <PrivateRoute>
+              <Administration />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/selling"
+          element={
+            <PrivateRoute>
+              <Selling />
+            </PrivateRoute>
+          }
+        />
       </Route>,
     ),
   );

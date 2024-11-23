@@ -12,8 +12,11 @@ import {
 import { UserService } from "../../service/userService";
 import { useDispatch } from "react-redux";
 import { setConnectedUser } from "../../redux/reducer/userReducer";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const [userType, setUserType] = useState<"BUYER" | "SELLER">("BUYER");
@@ -40,6 +43,7 @@ const Register = () => {
       userType: userType,
     }).then((res) => {
       dispatch(setConnectedUser(res));
+      navigate(location.state?.from?.pathname || "/", { replace: true });
     });
   };
 
